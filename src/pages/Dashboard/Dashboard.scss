@@ -1,0 +1,24 @@
+.dashboard-container {
+  background-color: #1e292d;
+  height: 100vh;
+  width: 100%;
+
+  td {
+    background-color: #1e292d;
+  }
+
+  table,
+  td,
+  th {
+    padding: 1rem;
+    border-bottom: 5px solid #141f23;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: center;
+    background-color: #192327;
+    color: #979a9b;
+  }
+}
