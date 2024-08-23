@@ -1,8 +1,15 @@
 .accordion-container{
     .header-styles{
         display: flex;
+        align-items: center;
         justify-content: space-between;
         width: 100%;
         color: white;
     }   
+
+    .flex-center{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
 }

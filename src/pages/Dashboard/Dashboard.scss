@@ -5,6 +5,7 @@
 
   td {
     background-color: #1e292d;
+    text-align: center;
   }
 
   table,
@@ -20,5 +21,15 @@
     text-align: center;
     background-color: #192327;
     color: #979a9b;
+  }
+
+  img{
+    margin: 4px;
+  }
+
+  .flex-center{
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 }
