@@ -6,7 +6,7 @@ const Accordion = () => {
             <header className="header-styles">
                 <div className='flex-center'>
                     <img src="https://uat-vbexplore.brainsightai.com/img/completed_accordin_icon.466363ec.svg" alt='CompletedIcon' />
-                    <p style={{margin:"0px 5px"}}>CompletedUploads</p>
+                    <b className='margin-yaxis-5'>Completed Uploads</b>
                 </div>
                 <img src="./arrow_down.svg" alt='CompletedIcon' />
             </header>

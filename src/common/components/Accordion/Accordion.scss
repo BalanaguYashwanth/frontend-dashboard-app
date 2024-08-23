@@ -1,15 +1,20 @@
-.accordion-container{
-    .header-styles{
+.accordion-container {
+
+    .margin-yaxis-5 {
+        margin: 0px 5px;
+    }
+
+    .header-styles {
         display: flex;
         align-items: center;
         justify-content: space-between;
         width: 100%;
-        color: white;
-    }   
+        color: #cacbca;
+    }
 
-    .flex-center{
+    .flex-center {
         display: flex;
         justify-content: center;
         align-items: center;
-      }
+    }
 }

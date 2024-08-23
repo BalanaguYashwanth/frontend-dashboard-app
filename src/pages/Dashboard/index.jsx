@@ -3,6 +3,8 @@ import io from 'socket.io-client';
 import Accordion from '../../common/components/Accordion/Accordion';
 import { fetchPatientRecords } from '../../common/api.services';
 import { API_URL, decodeProcessStatus } from '../../common/constants';
+import Tag from '../../common/components/Tag/Tag';
+import CustomButton from '../../common/components/CustomButton/CustomButton';
 import './Dashboard.scss'
 
 const socket = io(API_URL);
@@ -37,6 +39,7 @@ const Dashboard = () => {
     }, []);
 
 
+    //todo - make this table reusable including headers
     return (
         <main className='dashboard-container'>
             <table>
@@ -52,26 +55,26 @@ const Dashboard = () => {
                     </tr>
                 </thead>
                 <tbody>
-                    <tr style={{ margin: 'auto' }}>
+                    <tr>
                         <td colSpan="7">
                             <Accordion />
                         </td>
                     </tr>
                     {
-                        records?.length > 0 && records.map(({ age, sex, processStatus }, index) => (
+                        records?.length > 0 && records.map(({ patientId, age, sex, processStatus }, index) => (
                             <tr key={`records-${index}`}>
-                                <td>{index}</td>
+                                <td className='clr-white'>{patientId}</td>
                                 <td>{age}, {sex}</td>
-                                <td>FrontendSOL</td>
+                                <td className='clr-white'>FrontendSOL</td>
                                 <td>March 29, 2024 <br /> 4.28 PM</td>
                                 <td>TestFileName</td>
                                 <td>
-                                    {decodeProcessStatus[processStatus]}
+                                    <Tag title={decodeProcessStatus[processStatus]} />
                                 </td>
-                                <td className='flex-center'>
+                                <td>
                                     <img src="https://uat-vbexplore.brainsightai.com/img/download_icon2.f75eb645.svg" alt='download' />
                                     <img src="https://uat-vbexplore.brainsightai.com/img/report_icon2.edf631e0.svg" alt='report' />
-                                    View
+                                    <CustomButton title="View" />
                                 </td>
                             </tr>
                         ))
