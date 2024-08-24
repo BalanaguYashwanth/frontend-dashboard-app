@@ -87,7 +87,7 @@ const Dashboard = () => {
     return (
         <main className='dashboard-container-wrapper'>
             <section className='dashboard-container'>
-                <table>
+                <table className='dark-blue-green'>
                     <thead>
                         <tr>
                             <th>Patient ID</th>
@@ -101,7 +101,7 @@ const Dashboard = () => {
                     </thead>
                     <tbody>
                         <tr>
-                            <td colSpan="7">
+                            <td colSpan="7" className='dark-blue-green'>
                                 <Accordion />
                             </td>
                         </tr>
