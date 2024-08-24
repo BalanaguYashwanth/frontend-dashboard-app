@@ -13,6 +13,10 @@
   max-width: calc(1280px + 24px* 4);
   border-radius: 0.5rem;
 
+  @media (max-width: 50em) {
+    overflow-x: scroll;
+  }
+
   table,
   td,
   th {
