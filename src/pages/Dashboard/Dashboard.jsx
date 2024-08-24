@@ -3,28 +3,15 @@ import io from 'socket.io-client';
 import Accordion from '../../common/components/Accordion/Accordion';
 import CustomButton from '../../common/components/CustomButton/CustomButton';
 import Tag from '../../common/components/Tag/Tag';
-import { API_URL, decodeProcessStatus } from '../../common/constants';
+import { getFileNames } from '../../common/helper';
+import { API_URL, decodeProcessStatus, SOCKET_CONFIG } from '../../common/constants';
 import { fetchPatientRecords } from '../../common/api.services';
 import './Dashboard.scss'
 
-const socket = io(API_URL, { path: '/socket.io', 'transports': ['websocket', 'polling']});
+const socket = io(API_URL, SOCKET_CONFIG);
+
 const Dashboard = () => {
     const [records, setRecords] = useState([]);
-
-    const getFileNames = (files) => {
-        if (files?.length > 0) {
-            const fileNames = files.reduce((acc, file, index) => {
-                if (index > 0) {
-                    acc = acc + ' | ' + file?.name
-                } else {
-                    acc = acc + file?.name
-                }
-                return acc
-            }, '')
-            return fileNames
-        }
-
-    }
 
     const getPatientRecords = async () => {
         const { data } = await fetchPatientRecords();
@@ -64,7 +51,7 @@ const Dashboard = () => {
 
         socket.on('dataUpdatedPatientFiles', (updatedData) => {
             setRecords(prevRecords =>
-                prevRecords.map(record => 
+                prevRecords.map(record =>
                     record.files._id === updatedData._id
                         ? {
                             ...record,
@@ -79,12 +66,14 @@ const Dashboard = () => {
             );
         });
 
-        //todo - add all sockets
-        return () => socket.off('dataUpdated');
+        return () => {
+            socket.off('dataUpdatedRecords');
+            socket.off('dataUpdatedDisease');
+            socket.off('dataUpdatedPatientFiles');
+        };
     }, []);
 
 
-    //todo - make this table reusable including headers
     return (
         <main className='dashboard-container-wrapper'>
             <section className='dashboard-container'>
