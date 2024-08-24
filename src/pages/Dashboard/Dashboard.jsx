@@ -9,8 +9,22 @@ import './Dashboard.scss'
 
 const socket = io(API_URL);
 const Dashboard = () => {
-
     const [records, setRecords] = useState([]);
+
+    const getFileNames = (files) => {
+        if (files?.length > 0) {
+            const fileNames = files.reduce((acc, file, index) => {
+                if (index > 0) {
+                    acc = acc + ' | ' + file?.name
+                } else {
+                    acc = acc + file?.name
+                }
+                return acc
+            }, '')
+            return fileNames
+        }
+
+    }
 
     const getPatientRecords = async () => {
         const { data } = await fetchPatientRecords();
@@ -18,11 +32,12 @@ const Dashboard = () => {
     }
 
     const updatePatientRecord = (updatedData) => {
+        const { patientId, age, name, sex } = updatedData;
         setRecords((prevRecords) => {
             const index = prevRecords.findIndex(record => record._id === updatedData._id);
             if (index !== -1) {
                 const newRecords = [...prevRecords];
-                newRecords[index] = updatedData;
+                newRecords[index] = { ...prevRecords[index], patientId, age, name, sex };
                 return newRecords;
             }
             return [...prevRecords, updatedData];
@@ -31,8 +46,37 @@ const Dashboard = () => {
 
     useEffect(() => {
         getPatientRecords()
-        socket.on('dataUpdated', (updatedData) => {
+        socket.on('dataUpdatedRecords', (updatedData) => {
             updatePatientRecord(updatedData)
+        });
+
+        socket.on('dataUpdatedDisease', (updatedData) => {
+            setRecords(prevRecords =>
+                prevRecords.map(record => ({
+                    ...record,
+                    condition: {
+                        ...record.condition,
+                        name: updatedData.name
+                    }
+                }))
+            );
+        });
+
+        socket.on('dataUpdatedPatientFiles', (updatedData) => {
+            setRecords(prevRecords =>
+                prevRecords.map(record => 
+                    record.files._id === updatedData._id
+                        ? {
+                            ...record,
+                            files: {
+                                ...record.files,
+                                fileUploadedDate: updatedData.fileUploadedDate,
+                                files: updatedData.files
+                            }
+                        }
+                        : record
+                )
+            );
         });
 
         return () => socket.off('dataUpdated');
@@ -62,13 +106,13 @@ const Dashboard = () => {
                             </td>
                         </tr>
                         {
-                            records?.length > 0 && records.map(({ patientId, age, sex, processStatus }, index) => (
+                            records?.length > 0 && records.map(({ condition, patientId, age, sex, processStatus, files: PatientDoc }, index) => (
                                 <tr key={`records-${index}`} className='records-list'>
                                     <td className='clr-white'>{patientId}</td>
                                     <td>{age}, {sex}</td>
-                                    <td className='clr-white'>FrontendSOL</td>
-                                    <td>March 29, 2024 <br /> 4.28 PM</td>
-                                    <td>TestFileName</td>
+                                    <td className='clr-white'>{condition?.name}</td>
+                                    <td>{PatientDoc.fileUploadedDate}</td>
+                                    <td>{getFileNames(PatientDoc?.files)}</td>
                                     <td>
                                         <Tag title={decodeProcessStatus[processStatus]} />
                                     </td>
