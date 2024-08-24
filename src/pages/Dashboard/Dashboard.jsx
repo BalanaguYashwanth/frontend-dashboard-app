@@ -7,7 +7,7 @@ import { API_URL, decodeProcessStatus } from '../../common/constants';
 import { fetchPatientRecords } from '../../common/api.services';
 import './Dashboard.scss'
 
-const socket = io(API_URL);
+const socket = io(API_URL, { path: '/socket.io', 'transports': ['websocket', 'polling']});
 const Dashboard = () => {
     const [records, setRecords] = useState([]);
 
@@ -79,6 +79,7 @@ const Dashboard = () => {
             );
         });
 
+        //todo - add all sockets
         return () => socket.off('dataUpdated');
     }, []);
 
