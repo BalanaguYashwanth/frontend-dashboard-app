@@ -32,12 +32,12 @@ const Dashboard = () => {
     }
 
     const updatePatientRecord = (updatedData) => {
-        const { patientId, age, name, sex } = updatedData;
+        const { patientId, processStatus, age, name, sex } = updatedData;
         setRecords((prevRecords) => {
             const index = prevRecords.findIndex(record => record._id === updatedData._id);
             if (index !== -1) {
                 const newRecords = [...prevRecords];
-                newRecords[index] = { ...prevRecords[index], patientId, age, name, sex };
+                newRecords[index] = { ...prevRecords[index], patientId, processStatus, age, name, sex };
                 return newRecords;
             }
             return [...prevRecords, updatedData];
